@@ -1,6 +1,7 @@
 <?php
 $errors = array();
 $email = '';
+$image = '';
 $password = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once "connection_database.php";
@@ -18,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (isset($_POST['image']) and !empty($_POST['image'])) {
-        //$password = $_POST['image'];
+        $image = $_POST['image'];
         ;
     } else {
         $errors["image"] = "Поле є обов'язковим";
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (count($errors) == 0) {
         $sql = "INSERT INTO tbl_users (Email, Password, Image) VALUES (?,?,?)";
         $stmt= $dbh->prepare($sql);
-        $stmt->execute([$email, $password, "ssdfasfd"]);
+        $stmt->execute([$email, $password, $image]);
         header("Location: /index.php");
         exit;
     }
