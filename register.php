@@ -5,7 +5,7 @@ $image = '';
 $password = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once "connection_database.php";
-
+     include "resize_img.php";
     if (isset($_POST['email']) and !empty($_POST['email'])) {
         $email = $_POST['email'];
     } else {
@@ -22,23 +22,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
         $file_name= uniqid('300_').'.jpg';
         $file_save_path=$uploaddir.$file_name;
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $file_save_path)) {
-            echo "Файл корректен и был успешно загружен.\n";
-        } else {
-            echo "Возможная атака с помощью файловой загрузки!\n";
-        }
+        my_image_resize(600,400,$file_save_path,'image');
        $save_name='/uploads/'.$file_name;
        $sql = "INSERT INTO tbl_users (Email, Password, Image) VALUES (?,?,?)";
        $stmt= $dbh->prepare($sql);
-        $stmt->execute([$email, $password, $save_name]);
-        header("Location: /index.php");
-        exit;
+       $stmt->execute([$email, $password, $save_name]);
+
+       session_start();
+
+
+//        $sth = $dbh->prepare("SELECT Id, Email, Password,Image FROM `tbl_users` WHERE Image=$save_name");
+//        $sth->execute();
+// if($result = $sth->fetch(PDO::FETCH_ASSOC))
+// {
+       $_SESSION['user_id']="22";//витянуть Id нормальний
+//}
+       
+       header("Location: /userprofile.php");
+       exit;
     }
 }
 ?>
 
 <?php include "_header.php"; ?>
 <?php include_once "input-helper.php"?>
+
 <div class="row mt-3">
     <div class="offset-md-3 col-md-6">
         <h3>Створення нового акаунта</h3>

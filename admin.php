@@ -2,7 +2,8 @@
 
 
 <div class="container">
-  <h2>Basic Table</h2>
+  <h2>Список клієнтів</h2>
+  <a href="/register.php" class="btn btn-success">Додати</a>
   <table class="table">
     <thead>
       <tr>  
@@ -17,10 +18,8 @@
 
 <?php
 include_once "connection_database.php";
-
 $sth = $dbh->prepare("SELECT Id, Email, Password FROM `tbl_users`");
 $sth->execute();
-
 while($result = $sth->fetch(PDO::FETCH_ASSOC))
 {
     echo '
@@ -28,7 +27,7 @@ while($result = $sth->fetch(PDO::FETCH_ASSOC))
         <th scope="row">'.$result["Id"].'</th>
         <td>'.$result["Email"].'</td>
         <td>'.$result["Password"].'</td>
-        <td><a href="delete.php?id='.$result["Id"].'">Видалити</a></td>
+        <td><a href="delete.php?id='.$result["Id"].'">Видалити</a> | <a href="edit.php?id='.$result["Id"].'">Edit</a> </td>
     </tr>
     ';
 }

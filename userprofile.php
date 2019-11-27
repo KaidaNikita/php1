@@ -1,28 +1,23 @@
+<?php
+ $errors=array();
+ include_once "connection_database.php";
+ if($_SERVER["REQUEST_METHOD"]=="POST")
+ {
+    $id=$_SESSION['id'];
+   header("Location: /edit.php?id=$id");
+   exit;
+ }
+ ?>
+
 <?php include "_header.php"; ?>
 <link rel="stylesheet" href="scss/userprofile.scss">
 
-<?php
-include_once "connection_database.php";
-$id=$_GET["id"];
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
-    $file_name= uniqid('300_').'.jpg';
-    $file_save_path=$uploaddir.$file_name;
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $file_save_path)) {
-        echo "Файл корректен и был успешно загружен.\n";
-    } else {
-        echo "Возможная атака с помощью файловой загрузки!\n";
-    }
-   $save_name='/uploads/'.$file_name;
-   $sql = "UPDATE `tbl_users` SET `Image` = $save_name WHERE `tbl_users`.`Id` = $id;";
-   $stmt= $dbh->prepare($sql);
-   $stmt->execute();
-}
-?>
 
 
 <?php
+include_once "input-helper.php";
+session_start();
+$id=$_SESSION['user_id'];
 $sth = $dbh->prepare("SELECT Id, Email, Password,Image FROM `tbl_users` WHERE Id=$id");
 $sth->execute();
 $result = $sth->fetch(PDO::FETCH_ASSOC);
@@ -34,11 +29,8 @@ echo '
                     <div class="col-md-4">
                         <div class="profile-img">
                             <img src="'.$result["Image"].'" alt="Фото"/>
-                            <div class="file btn btn-lg btn-primary">
-                                Change Photo
-                                <input type="file" name="image"/>
-                            </div>
                         </div>
+                        <?php create_input("image","Фото", "file", $errors); ?>
                     </div>
                     <div class="col-md-6">
                         <div class="profile-head">
