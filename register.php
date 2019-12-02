@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //        $sth->execute();
 // if($result = $sth->fetch(PDO::FETCH_ASSOC))
 // {
-       $_SESSION['user_id']="22";//витянуть Id нормальний
+      // $_SESSION['user_id']="22";//витянуть Id нормальний
 //}
        
        header("Location: /userprofile.php");

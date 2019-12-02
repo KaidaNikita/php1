@@ -6,18 +6,18 @@
  {
    $id=$_POST['id'];
    $email=$_POST['email'];
-
-
+   if($_FILES['image']['tmp_name']!=null)
+{
    $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
    $file_name= uniqid('300_').'.jpg';
    $file_save_path=$uploaddir.$file_name;
    my_image_resize(600,400,$file_save_path,'image');
    $save_name='/uploads/'.$file_name;
-
     $sql = "UPDATE tbl_users SET Email=?,Image=? WHERE Id=?";
     $stmt= $dbh->prepare($sql);
     $stmt->execute([$email, $save_name, $id]);
-   header("Location: /admin.php");
+}
+   header("Location: /userprofile.php?id=$id");
    exit;
  }
  ?>

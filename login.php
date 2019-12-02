@@ -2,6 +2,8 @@
     $errors=array();
     $email='';
     $password='';
+    $id='';
+    $login=false;
     if($_SERVER["REQUEST_METHOD"]=="POST")
     {
         if(isset($_POST['email']) and !empty($_POST['email']))
@@ -17,16 +19,25 @@
                 $errors["password"] = "Поле пароль є обов'язковим";
             }
 
-        if($email!="admin@gmail.com"&&!empty($email))
-        {
-            $errors["email"]="Не правильна пошта";
-        }
-        if($password!="123456"&&!empty($password))
-        {
-            $errors["password"]="Не правильний пароль";
-        }
-
-        if(count($errors)==0) {
+            include_once "connection_database.php";
+            $sth = $dbh->prepare("SELECT Id, Email, Password FROM `tbl_users`");
+            $sth->execute();
+            while($result = $sth->fetch(PDO::FETCH_ASSOC))
+            {      
+              if($email==$result['Email']&&$password==$result['Password'])
+              {
+                 $login=true;
+                 $id=$result['Id'];
+                 break;
+              }
+            }
+            if(!$login)
+            {
+                $errors["login"]="Користувач не знайдений!";
+            }
+        if(count($errors)==0&&$login==true) {
+            session_start();
+            $_SESSION['id']=$id;
             header("Location: /index.php");
             exit;
         }
@@ -47,6 +58,8 @@
                                 echo "<br/>";
                                 if(!empty($errors["password"]))
                                 echo $errors["password"];
+                                if(!empty($errors["login"]))
+                                echo $errors["login"];
                               ?>
                         </div>
                     <?php } ?>

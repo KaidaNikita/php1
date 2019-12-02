@@ -3,7 +3,8 @@
  include_once "connection_database.php";
  if($_SERVER["REQUEST_METHOD"]=="POST")
  {
-    $id=$_SESSION['id'];
+   // $id=$_GET['id'];
+    $id=$_SESSION['user_id'];
    header("Location: /edit.php?id=$id");
    exit;
  }
@@ -17,7 +18,8 @@
 <?php
 include_once "input-helper.php";
 session_start();
-$id=$_SESSION['user_id'];
+$id=$_SESSION['id'];
+//$id=$_GET['id'];
 $sth = $dbh->prepare("SELECT Id, Email, Password,Image FROM `tbl_users` WHERE Id=$id");
 $sth->execute();
 $result = $sth->fetch(PDO::FETCH_ASSOC);
