@@ -1,9 +1,20 @@
-<?php include "_header.php"; ?>
+<?php
+include_once "_header.php";
+include_once "_navbar.php";
+?>
 
-    <?php
-        echo "<h2> Hello</h2>";
-       // if (isset($_GET["email"]) and !empty($_GET["email"])) 
-        //echo $_GET["email"];
-    ?>
+<div class="container">
+    <div class="row">
+      <h1>Hello PHP</h1>
+      <?php 
+      $a=12;
+      $b=12;
+      $c=$a+$b;
+      echo "Hello Apache"; ?>
+    </div>   
+</div>
 
-<?php include "_footer.php"; ?>
+<?php
+include_once "_scripts.php";
+include_once "_footer.php";
+?>

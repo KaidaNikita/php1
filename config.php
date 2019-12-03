@@ -1,5 +1,6 @@
 <?php
-define('DB_NAME','semen');
+
+define('DB_NAME','animal_jon');
 define('DB_USER','root');
 define('DB_PASSWORD','');
 define('DB_HOST','localhost');
